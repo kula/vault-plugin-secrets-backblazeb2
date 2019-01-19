@@ -22,13 +22,20 @@ In order to configure the plugin instance, you must supply it with either your
 Backblaze B2 key id and value. This can be either your account master key, or
 a key with the `writeKeys` capability.
 
-    $ vault write b2/config/key \
+    $ vault write b2/config \
 		account_id=<account id> \
 		key_id=<key id or account id> \
 		key=<key value> \
 
 If `key_id` is not supplied, it's assumed that you are using your account 
 master key, and the `key_id` is the same as your `account_id`.
+
+You can read the current configuration:
+
+    $ vault read b2/config
+
+This returns the `account_id`, `key_id` and `key_name` of the currently
+configured key.
 
 You can also rotate the key stored in the plugin configuration. This will 
 cause the plugin to call the `b2_create_key` call to create a new key
@@ -40,14 +47,6 @@ used key. This key cannot be extracted.
 
 The `<optional key name>` is B2 key name. If not supplied, it defaults
 to `vault-plugin-secrets-backblazeb2`.
-
-Finally, you can read the current configuration:
-
-    $ vault read b2/config
-
-This returns the `account_id`, `key_id` and `key_name` of the currently
-configured key.
-
 
 ### Roles
 
