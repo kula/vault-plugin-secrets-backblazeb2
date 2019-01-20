@@ -52,7 +52,7 @@ func (b *backend) pathRotateKey(ctx context.Context, req *logical.Request, d *fr
 
     // Set new key options
     var opts []b2client.KeyOption
-    opts = append(opts, b2client.Capabilities("writeKeys"))
+    opts = append(opts, b2client.Capabilities("listKeys", "writeKeys", "deleteKeys"))
 
     // Set key_name
     var newKeyName string
@@ -104,13 +104,37 @@ func (b *backend) pathRotateKey(ctx context.Context, req *logical.Request, d *fr
 
     }
 
-    // Destroy key
+    // Replace client
+
+    client, err = b.getB2Client(ctx, req.Storage)
+    if err != nil {
+	return nil, errwrap.Wrapf("Failed to create new b2client: {{err}}", err)
+    }
+    b.client = client
+
+    // Destroy old key
     b.Logger().Info("Deleting previous key", "id", oldKeyId)
 
-    // Destroy any old b2client which may exist so we get a new one
-    // with the next request
+    // Have to look up old key first --- there's no way in blazer to
+    // "instantiate" a key knowing the keyId, although that's all
+    // Delete is going to need to delete the key
+    oldKeys, _, err := b.client.ListKeys(ctx, 1, oldKeyId)
+    if err != nil {
+	b.Logger().Error("Error looking up previous key", "error", err)
+	return nil, errwrap.Wrapf("Failed to look up previous key: {{err}}", err)
+    }
 
-    b.client = nil
+    // We *should* only get one, and *should* only get the
+    // one we asked for, but be safe
+    for _, key := range oldKeys {
+	b.Logger().Debug("Deleting old key, examining", "ID", key.ID())
+	if key.ID() == oldKeyId {
+	   if err = key.Delete(ctx); err != nil {
+	       b.Logger().Error("Error deleting old key", "error", err)
+	       return nil, errwrap.Wrapf("Error deleting old key: {{err}}", err)
+	   }
+	}
+    }
 
     return nil, nil
 }
