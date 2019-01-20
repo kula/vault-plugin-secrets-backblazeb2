@@ -77,7 +77,7 @@ func (b *backend) pathRotateKey(ctx context.Context, req *logical.Request, d *fr
 	    "key_name": &framework.FieldSchema{Type: framework.TypeString},
 	},
 	Raw: map[string]interface{}{
-	    "key_id": newKey.ID,
+	    "key_id": newKey.ID(),
 	    "key": newKey.Secret(),
 	    "key_name": newKey.Name(),
 	},
