@@ -9,7 +9,7 @@ vault-plugin-secrets-backblazeb2: $(GOFILES)
 clean:
 	rm -f vault-plugin-secrets-backblazeb2
 
-test:
+test: vault-plugin-secrets-backblazeb2
 	/bin/bash test/test.sh
 
 .PHONY: default clean test
