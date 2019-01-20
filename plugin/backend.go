@@ -48,6 +48,12 @@ func Backend() *backend {
 	    // path_config_rotate.go
 	    // ^config/rotate
 	    b.pathConfigRotate(),
+
+	    // path_roles.go
+	    // ^roles (LIST)
+	    b.pathRoles(),
+	    // ^roles/<role> 
+	    b.pathRolesCRUD(),
 	},
     }
 
