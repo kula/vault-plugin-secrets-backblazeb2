@@ -2,6 +2,7 @@ package b2
 
 import (
     "context"
+    "fmt"
 
     "github.com/hashicorp/errwrap"
     "github.com/hashicorp/vault/logical"
@@ -11,7 +12,7 @@ import (
 // Define the CRU functions for the config path
 func (b *backend) pathConfigCRUD() *framework.Path {
     return &framework.Path{
-	Pattern: "config",
+	Pattern: fmt.Sprintf("config/?$"),
 	HelpSynopsis: "Configure the Backblaze B2 connection.",
 	HelpDescription: "Use this endpoint to set the Backblaze B2 account id, key id and key.",
 
@@ -80,6 +81,11 @@ func (b *backend) pathConfigUpdate(ctx context.Context, req *logical.Request, d 
 	}
 
     }
+
+    // Destroy any old b2client which may exist so we get a new one
+    // with the next request
+
+    b.client = nil
 
     return nil, nil
 }

@@ -2,13 +2,23 @@ package b2
 
 import (
     "context"
+    "sync"
 
     "github.com/hashicorp/vault/logical"
     "github.com/hashicorp/vault/logical/framework"
+
+    b2client "github.com/kurin/blazer/b2"
 )
 
 type backend struct {
     *framework.Backend
+
+    client *b2client.Client
+
+    // We're going to have to be able to rotate the client
+    // if the mount configured credentials change, use
+    // this to protect it
+    clientMutex sync.RWMutex
 }
 
 // Factory returns a configured instance of the B2 backend
@@ -34,8 +44,14 @@ func Backend() *backend {
 	    // path_config.go
 	    // ^config
 	    b.pathConfigCRUD(),
+
+	    // path_config_rotate.go
+	    // ^config/rotate
+	    b.pathConfigRotate(),
 	},
     }
+
+    b.client = (*b2client.Client)(nil)
 
     return &b
 }

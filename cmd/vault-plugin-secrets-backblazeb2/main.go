@@ -3,7 +3,7 @@ package main
 import (
     "os"
 
-    b2 "./plugin"
+    b2 "github.com/kula/vault-plugin-secrets-backblazeb2/plugin"
     hclog "github.com/hashicorp/go-hclog"
     "github.com/hashicorp/vault/helper/pluginutil"
     "github.com/hashicorp/vault/logical/plugin"
