@@ -26,9 +26,9 @@ type Role struct {
 
     NamePrefix string `json:"name_prefix"`
 
-    // BucketId is an optional restriction to limit this key to 
+    // BucketName is an optional restriction to limit this key to
     // a particular bucket
-    BucketId string `json:"bucket_id"`
+    BucketName string `json:"bucket_id"`
 
     // Prefix is an optional restriction to limit which object
     // name prefixes this key can operate on

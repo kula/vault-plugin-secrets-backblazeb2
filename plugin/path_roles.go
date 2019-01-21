@@ -97,7 +97,7 @@ func (b *backend) pathRoleRead(ctx context.Context, req *logical.Request, d *fra
     role_data := map[string]interface{}{
 	"capabilities": r.Capabilities,
 	"name_prefix": r.NamePrefix,
-	"bucket_id": r.BucketId,
+	"bucket_name": r.BucketName,
 	"prefix": r.Prefix,
     }
 
@@ -112,7 +112,7 @@ func (b *backend) pathRoleWrite(ctx context.Context, req *logical.Request, d *fr
 
     var r Role
 
-    keys := []string{"name_prefix", "bucket_id", "prefix"}
+    keys := []string{"name_prefix", "bucket", "prefix"}
 
     for _, key := range keys {
         if v, ok := d.GetOk(key); ok {
@@ -121,8 +121,8 @@ func (b *backend) pathRoleWrite(ctx context.Context, req *logical.Request, d *fr
             switch key {
 	    case "name_prefix":
 		r.NamePrefix = nv
-	    case "bucket_id":
-		r.BucketId = nv
+	    case "bucket":
+		r.BucketName = nv
 	    case "prefix":
 		r.Prefix = nv
 	    }
