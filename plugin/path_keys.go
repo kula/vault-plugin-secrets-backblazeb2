@@ -49,7 +49,7 @@ func (b *backend) pathKeyRead(ctx context.Context, req *logical.Request, d *fram
 	return nil, errwrap.Wrapf("Error fetching config: {{err}}", err)
     }
 
-    newKeyName := fmt.Sprintf("%s%s", role.NamePrefix, req.ID)
+    newKeyName := fmt.Sprintf("%s%s", role.KeyNamePrefix, req.ID)
 
     // Calculate lifetime
     reqTTL := time.Duration(d.Get("ttl").(int)) * time.Second

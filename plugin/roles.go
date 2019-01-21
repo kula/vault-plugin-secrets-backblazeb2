@@ -21,19 +21,19 @@ type Role struct {
     // the capabilities this key will have in B2
     Capabilities []string `json:"capabilities"`
 
-    // NamePrefix is what we prepend to the key name when we
+    // KeyNamePrefix is what we prepend to the key name when we
     // create it, followed by the Vault request ID which asked
     // for the key to be made
 
-    NamePrefix string `json:"name_prefix"`
+    KeyNamePrefix string `json:"key_name_prefix"`
 
     // BucketName is an optional restriction to limit this key to
     // a particular bucket
     BucketName string `json:"bucket_id"`
 
-    // Prefix is an optional restriction to limit which object
+    // NamePrefix is an optional restriction to limit which object
     // name prefixes this key can operate on
-    Prefix string `json:"prefix"`
+    NamePrefix string `json:"name_prefix"`
 
     // DefaultTTL is the TTL which will be applied to keys if no
     // TTL is requested
