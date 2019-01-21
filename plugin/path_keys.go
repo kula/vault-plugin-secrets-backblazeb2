@@ -59,10 +59,10 @@ func (b *backend) pathKeyRead(ctx context.Context, req *logical.Request, d *fram
     }
 
     // Add a small buffer so key expires after lease does
-    ttl = ttl + (time.Second * 5)
+    realttl := ttl + (time.Second * 5)
 
     // Generate key
-    newKey, err := b.b2ApplicationKeyCreate(ctx, req.Storage, newKeyName, config.AccountId, role.Capabilities, role.BucketName, role.NamePrefix, ttl)
+    newKey, err := b.b2ApplicationKeyCreate(ctx, req.Storage, newKeyName, config.AccountId, role.Capabilities, role.BucketName, role.NamePrefix, realttl)
     if err != nil {
 	return nil, err
     }
@@ -82,6 +82,9 @@ func (b *backend) pathKeyRead(ctx context.Context, req *logical.Request, d *fram
 	"applicationKeyId": newKey.ID(),
 	"accountId": config.AccountId,
     })
+
+    resp.Secret.TTL = ttl
+    resp.Secret.MaxTTL = role.MaxTTL
 
     return resp, nil
 }
