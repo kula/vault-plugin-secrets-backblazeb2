@@ -29,6 +29,10 @@ func (b *backend) pathConfigCRUD() *framework.Path {
 		Type: framework.TypeString,
 		Description: "The Backblaze B2 Key.",
 	    },
+	    "key_name": &framework.FieldSchema{
+		Type: framework.TypeString,
+		Description: "(Optional) Key name.",
+	    },
 	},
 
 	Callbacks: map[logical.Operation]framework.OperationFunc{
