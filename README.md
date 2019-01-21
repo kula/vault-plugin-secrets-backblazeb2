@@ -1,9 +1,12 @@
 # vault-plugin-secrets-backblazeb2
 
+**NOTE**: This code is *extremely* alpha quality, use at your own risk.
+
 This is a plugin for [HashiCorp Vault][vault] which will provision
 API keys for the [Backblaze B2 Cloud Storage][b2] service. A good
 deal of help was gleaned from the [vault-plugin-secrets-helloworld][helloworld]
-plugin from @daveadams
+plugin from @daveadams, as well as the Vault built-in AWS and database
+secrets engines.
 
 ## Usage
 
