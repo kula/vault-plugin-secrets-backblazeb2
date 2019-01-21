@@ -54,6 +54,14 @@ func Backend() *backend {
 	    b.pathRoles(),
 	    // ^roles/<role> 
 	    b.pathRolesCRUD(),
+
+	    // path_keys.go
+	    // ^keys/<role>
+	    b.pathKeysRead(),
+	},
+
+	Secrets: []*framework.Secret{
+	    b.b2ApplicationsKeys(),
 	},
     }
 
