@@ -15,8 +15,6 @@ var (
 
 // A role stored in the storage backend
 type Role struct {
-    // The name of the role in vault
-    RoleName string `json:"role_name"`
 
     // Capabilities is a list of strings which reflects
     // the capabilities this key will have in B2

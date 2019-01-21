@@ -95,7 +95,6 @@ func (b *backend) pathRoleRead(ctx context.Context, req *logical.Request, d *fra
     }
 
     role_data := map[string]interface{}{
-	"role_name": r.RoleName,
 	"capabilities": r.Capabilities,
 	"name_prefix": r.NamePrefix,
 	"bucket_id": r.BucketId,
