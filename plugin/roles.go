@@ -4,6 +4,7 @@ import (
     "context"
     "errors"
     "fmt"
+    "time"
 
     "github.com/hashicorp/errwrap"
     "github.com/hashicorp/vault/logical"
@@ -33,6 +34,13 @@ type Role struct {
     // Prefix is an optional restriction to limit which object
     // name prefixes this key can operate on
     Prefix string `json:"prefix"`
+
+    // DefaultTTL is the TTL which will be applied to keys if no
+    // TTL is requested
+    DefaultTTL time.Duration `json:"default_ttl"`
+
+    // MaxTTL is the maximum any TTL can be for this role
+    MaxTTL time.Duration `json:"max_ttl"`
 }
 
 // List Roles

@@ -4,6 +4,7 @@ import (
     "context"
     "fmt"
     "strings"
+    "time"
 
     "github.com/hashicorp/errwrap"
     "github.com/hashicorp/vault/logical"
@@ -58,6 +59,14 @@ func (b *backend) pathRolesCRUD() *framework.Path {
 		Type: framework.TypeString,
 		Description: "Optional prefix to further restrict a bucket key.",
 	    },
+	    "default_ttl": &framework.FieldSchema{
+		Type: framework.TypeDurationSecond,
+		Description: "Optional default TTL to apply to keys.",
+	    },
+	    "max_ttl": &framework.FieldSchema{
+		Type: framework.TypeDurationSecond,
+		Description: "Optional maximum TTL to apply to keys.",
+	    },
 	},
 
 	ExistenceCheck: b.pathRoleExistsCheck,
@@ -99,6 +108,8 @@ func (b *backend) pathRoleRead(ctx context.Context, req *logical.Request, d *fra
 	"name_prefix": r.NamePrefix,
 	"bucket_name": r.BucketName,
 	"prefix": r.Prefix,
+	"default_ttl": r.DefaultTTL.Seconds(),
+	"max_ttl": r.MaxTTL.Seconds(),
     }
 
     return &logical.Response{
@@ -111,8 +122,9 @@ func (b *backend) pathRoleWrite(ctx context.Context, req *logical.Request, d *fr
     role := d.Get("role").(string)
 
     var r Role
+    var keys []string
 
-    keys := []string{"name_prefix", "bucket", "prefix"}
+    keys = []string{"name_prefix", "bucket", "prefix"}
 
     for _, key := range keys {
         if v, ok := d.GetOk(key); ok {
@@ -128,6 +140,23 @@ func (b *backend) pathRoleWrite(ctx context.Context, req *logical.Request, d *fr
 	    }
 	}
     }
+
+    // Handle TTLs
+    keys = []string{"default_ttl", "max_ttl"}
+
+    for _, key := range keys {
+	if v, ok := d.GetOk(key); ok {
+	    duration := time.Duration(v.(int)) * time.Second
+
+	    switch key {
+	    case "default_ttl":
+		r.DefaultTTL = duration
+	    case "max_ttl":
+		r.MaxTTL = duration
+	    }
+	}
+    }
+
 
     // Handle capabilities
     if c, ok := d.GetOk("capabilities"); ok {
