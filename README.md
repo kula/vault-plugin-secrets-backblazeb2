@@ -88,6 +88,10 @@ Returns the keyName, applicationKeyId, applicationKey, capabilities, accountId,
 expirationTimestamp, bucketId and namePrefix of the key as outlined in the
 `b2_create_key` API call.
 
+## Disclaimer
+
+**Full Disclosure**: At this time I am an employee of HashiCorp, but this
+project is entirely personal and is not an official product of HashiCorp, Inc.
 
 [vault]: https://www.vaultproject.io
 [b2]: https://www.backblaze.com/b2/
